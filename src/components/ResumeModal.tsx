@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Printer, 
   Copy, 
   Check, 
-  Mail, 
-  MapPin, 
-  ExternalLink, 
   FileText,
   Download
 } from 'lucide-react';
-import { RESUME_DATA } from '../data/portfolioData';
+import { EXACT_PDF_CV_DATA } from '../data/portfolioData';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -20,6 +17,26 @@ interface ResumeModalProps {
 export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => {
   const [copied, setCopied] = useState<boolean>(false);
 
+  // Close on Escape key & manage body scroll
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handlePrint = () => {
@@ -27,180 +44,286 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   };
 
   const handleCopyMarkdown = () => {
-    const markdown = `# ${RESUME_DATA.name}
-**${RESUME_DATA.title}**
-Location: ${RESUME_DATA.location} | Email: ${RESUME_DATA.email} | Web: ${RESUME_DATA.website}
+    const d = EXACT_PDF_CV_DATA;
+    const markdown = `# ${d.name}
+**${d.roleTitle}**
+Tel.: ${d.phone} | E-mail: ${d.email} | Localization: ${d.localization} | Portfolio: ${d.portfolioLink}
 
 ## Executive Summary
-${RESUME_DATA.summary}
+${d.executiveSummary}
 
-## Core Competencies
-${RESUME_DATA.coreSkills.map(s => `- ${s}`).join('\n')}
+## Core Competencies & AX Toolkit
+${d.competencyCategories.map(c => `• **${c.category}**: ${c.items}`).join('\n\n')}
 
 ## Professional Experience
-${RESUME_DATA.experience.map(e => `### ${e.role} — ${e.company} (${e.period})\n${e.highlights.map(h => `- ${h}`).join('\n')}`).join('\n\n')}
+${d.professionalExperience.map(exp => `### ${exp.role}\n**${exp.company}** ${exp.period ? `| ${exp.period}` : ''}\n${exp.bullets.map(b => `• **${b.label}**: ${b.desc}`).join('\n')}`).join('\n\n')}
 
-## Education
-${RESUME_DATA.education.map(ed => `- ${ed.degree}, ${ed.institution} (${ed.year})`).join('\n')}
+## Additional Experience
+${d.additionalExperience.map(a => `• **${a.role}** | ${a.company} | ${a.period}`).join('\n')}
+
+## Selected Agentic & AI Projects
+${d.selectedProjects.map(p => `• **${p.title}**: ${p.description}`).join('\n\n')}
+
+## Education & Continuous Specialization
+### Formal Education & Technical Foundation
+${d.educationFormal.map(e => `• **${e.title}** | ${e.institution} | ${e.year}\n  ${e.details}`).join('\n')}
+
+### Continuous Agent Experience (AX) & AI Specialization
+${d.educationContinuous.map(c => `• **${c.title}**: ${c.details}`).join('\n')}
+
+---
+${d.rodoConsent}
 `;
     navigator.clipboard.writeText(markdown);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const cv = EXACT_PDF_CV_DATA;
+
   return (
     <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-[#0F172A]/70 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-xs flex items-start justify-center p-3 sm:p-6 md:p-8"
+      onClick={(e) => {
+        // Exit when clicking the backdrop
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
       role="dialog"
       aria-modal="true"
-      aria-label="Executive Curriculum Vitae"
+      aria-label="Paweł Prusko CV"
     >
-      <div className="relative w-full max-w-4xl bg-white border border-[#E2E8F0] rounded-xl shadow-2xl overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-150">
+      {/* Floating high-visibility Close Button for immediate exit */}
+      <button
+        onClick={onClose}
+        className="fixed top-4 right-4 sm:top-6 sm:right-6 z-60 p-2.5 rounded-full bg-[#090A0F] text-white hover:bg-zinc-800 transition-transform active:scale-95 shadow-lg flex items-center justify-center border border-zinc-700"
+        aria-label="Zamknij podgląd CV"
+        title="Zamknij (ESC lub kliknij w tło)"
+      >
+        <X className="w-5 h-5 text-white stroke-[2.5]" />
+      </button>
+
+      {/* Main Document Container - Never clipped at the top */}
+      <div 
+        className="relative w-full max-w-4xl bg-white border border-[#E4E4E7] rounded-lg shadow-2xl overflow-hidden my-4 sm:my-8 animate-in fade-in zoom-in-95 duration-150"
+        onClick={(e) => e.stopPropagation()}
+      >
         
-        {/* Modal Top Control Bar (Non-print) */}
-        <div className="no-print bg-[#F8FAFC] px-6 py-3 border-b border-[#E2E8F0] flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#0F172A]">
-            <FileText className="w-4 h-4 text-indigo-600" />
-            <span>Executive Curriculum Vitae · Swiss Editorial Format</span>
+        {/* Sticky Action Toolbar inside the modal */}
+        <div className="no-print sticky top-0 z-30 bg-[#FAFAFA] border-b border-[#E4E4E7] px-5 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 font-mono text-xs font-semibold text-[#090A0F]">
+            <FileText className="w-4 h-4 text-[#090A0F]" />
+            <span>Paweł Prusko — Exact CV Document</span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={handleCopyMarkdown}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 transition-colors shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium text-[#52525B] bg-white border border-[#E4E4E7] rounded hover:text-[#090A0F] transition-colors"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copied ? 'Copied Markdown' : 'Copy ATS Markdown'}</span>
+              {copied ? <Check className="w-3.5 h-3.5 text-[#090A0F]" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copied ? 'Copied' : 'Copy Text'}</span>
             </button>
 
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#0F172A] rounded hover:bg-slate-800 transition-colors shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-mono font-semibold text-white bg-[#090A0F] rounded hover:bg-[#27272A] transition-colors"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>Print / Save as PDF</span>
+              <span>Print / Save PDF</span>
             </button>
 
+            {/* In-toolbar explicit Close Button */}
             <button
               onClick={onClose}
-              className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
-              aria-label="Close CV Modal"
+              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-mono font-semibold text-[#090A0F] bg-white border border-[#090A0F] rounded hover:bg-[#090A0F] hover:text-white transition-colors"
+              title="Close modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-3.5 h-3.5" />
+              <span>Close</span>
             </button>
           </div>
         </div>
 
-        {/* PRINTABLE RESUME DOCUMENT CANVAS */}
-        <div className="p-8 sm:p-12 lg:p-16 space-y-10 bg-white text-[#0F172A]">
+        {/* EXACT PDF DOCUMENT REPRODUCTION */}
+        <div className="p-6 sm:p-12 lg:p-16 space-y-8 bg-white text-[#090A0F] font-['Plus_Jakarta_Sans',system-ui,sans-serif]">
           
-          {/* Header Block */}
-          <div className="space-y-4 border-b border-[#0F172A] pb-6">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#0F172A]">
-                  {RESUME_DATA.name}
-                </h1>
-                <p className="text-base sm:text-lg font-medium text-indigo-700 mt-1">
-                  {RESUME_DATA.title}
-                </p>
-              </div>
-
-              <div className="text-right text-xs text-[#475569] space-y-1 font-mono">
-                <p className="flex items-center justify-end gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-slate-400" />
-                  <a href={`mailto:${RESUME_DATA.email}`} className="text-[#0F172A] hover:underline">
-                    {RESUME_DATA.email}
-                  </a>
-                </p>
-                <p className="flex items-center justify-end gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                  <span>{RESUME_DATA.location} (Remote EU/US)</span>
-                </p>
-                <p className="flex items-center justify-end gap-1.5">
-                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-                  <span>LinkedIn / Portfolio Verified</span>
-                </p>
-              </div>
+          {/* Header Block matching PDF */}
+          <div className="space-y-1.5 border-b border-[#E4E4E7] pb-6">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#090A0F]">
+              {cv.name} CV
+            </h1>
+            <p className="text-base sm:text-lg font-medium text-[#52525B]">
+              {cv.roleTitle}
+            </p>
+            <div className="pt-2 text-xs font-mono text-[#52525B] flex flex-wrap items-center gap-x-2 gap-y-1">
+              <span>Tel.: <strong className="text-[#090A0F]">{cv.phone}</strong></span>
+              <span>|</span>
+              <span>E-mail: <a href={`mailto:${cv.email}`} className="text-[#090A0F] hover:underline font-semibold">{cv.email}</a></span>
+              <span>|</span>
+              <span>Localization: <strong className="text-[#090A0F]">{cv.localization}</strong></span>
+              <span>|</span>
+              <span>Link to Portfolio: <a href="#case-studies" onClick={onClose} className="text-[#090A0F] underline font-semibold">Interactive Showcases</a></span>
             </div>
+          </div>
 
-            {/* Executive Summary */}
-            <p className="text-xs sm:text-sm text-[#475569] leading-relaxed pt-2">
-              {RESUME_DATA.summary}
+          {/* Executive Summary */}
+          <div className="space-y-2">
+            <p className="text-xs sm:text-sm text-[#090A0F] leading-relaxed">
+              {cv.executiveSummary}
             </p>
           </div>
 
-          {/* Core Competencies Grid (Unboxed Swiss Layout) */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F172A] border-b border-slate-200 pb-1">
-              Core Competencies &amp; Architectural Focus
+          {/* Core Competencies & AX Toolkit */}
+          <div className="space-y-3 pt-2">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#090A0F] border-b border-[#090A0F] pb-1 font-mono">
+              Core Competencies &amp; AX Toolkit
             </h2>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-2 gap-x-4 text-xs font-medium text-[#475569]">
-              {RESUME_DATA.coreSkills.map((skill, idx) => (
-                <div key={idx} className="flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-indigo-600"></span>
-                  <span>{skill}</span>
+            <div className="space-y-2.5 text-xs sm:text-sm text-[#090A0F] leading-relaxed">
+              {cv.competencyCategories.map((c, idx) => (
+                <div key={idx} className="flex items-start gap-2">
+                  <span className="font-mono text-[#090A0F] mt-0.5">•</span>
+                  <p>
+                    <strong className="font-semibold text-[#090A0F]">{c.category}:</strong>{' '}
+                    <span className="text-[#52525B]">{c.items}</span>
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Professional Experience */}
-          <div className="space-y-6">
-            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F172A] border-b border-slate-200 pb-1">
+          <div className="space-y-6 pt-2">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#090A0F] border-b border-[#090A0F] pb-1 font-mono">
               Professional Experience
             </h2>
 
             <div className="space-y-8">
-              {RESUME_DATA.experience.map((exp, idx) => (
-                <div key={idx} className="space-y-2">
+              {cv.professionalExperience.map((exp, idx) => (
+                <div key={idx} className="space-y-2.5">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <div>
-                      <h3 className="text-sm font-bold text-[#0F172A]">
+                      <h3 className="text-sm sm:text-base font-bold text-[#090A0F]">
                         {exp.role}
                       </h3>
-                      <p className="text-xs text-indigo-700 font-medium">
+                      <p className="text-xs sm:text-sm text-[#52525B] font-mono">
                         {exp.company}
                       </p>
                     </div>
 
-                    <span className="text-xs font-mono text-slate-500 tabular-nums">
-                      {exp.period}
-                    </span>
+                    {exp.period && (
+                      <span className="text-xs font-mono text-[#52525B] tabular-nums">
+                        {exp.period}
+                      </span>
+                    )}
                   </div>
 
-                  <ul className="space-y-1.5 text-xs text-[#475569] list-disc list-outside ml-4 leading-relaxed">
-                    {exp.highlights.map((h, hIdx) => (
-                      <li key={hIdx}>{h}</li>
+                  <div className="space-y-2 text-xs sm:text-sm text-[#090A0F] leading-relaxed pl-1">
+                    {exp.bullets.map((b, bIdx) => (
+                      <div key={bIdx} className="flex items-start gap-2">
+                        <span className="font-mono text-[#090A0F] mt-0.5">•</span>
+                        <p>
+                          <strong className="font-semibold text-[#090A0F]">{b.label}:</strong>{' '}
+                          <span className="text-[#52525B]">{b.desc}</span>
+                        </p>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Education */}
-          <div className="space-y-3 border-t border-slate-200 pt-6">
-            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F172A] pb-1">
-              Education &amp; Credentials
-            </h2>
+          {/* Additional Experience */}
+          <div className="space-y-3 pt-2">
+            <h3 className="text-xs sm:text-sm font-bold text-[#090A0F] font-mono uppercase">
+              Additional Experience
+            </h3>
 
-            {RESUME_DATA.education.map((edu, idx) => (
-              <div key={idx} className="flex flex-wrap items-baseline justify-between text-xs text-[#475569]">
-                <div>
-                  <strong className="text-[#0F172A]">{edu.degree}</strong>
-                  <p>{edu.institution}</p>
+            <div className="space-y-1.5 text-xs sm:text-sm text-[#52525B] font-mono">
+              {cv.additionalExperience.map((add, idx) => (
+                <div key={idx} className="flex items-start gap-2">
+                  <span className="text-[#090A0F]">•</span>
+                  <p>
+                    <strong className="text-[#090A0F] font-semibold">{add.role}</strong> | {add.company} | {add.period}
+                  </p>
                 </div>
-                <span className="font-mono text-slate-500">{edu.year}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* Document Footer */}
-          <div className="pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between text-[11px] text-slate-400 font-mono">
-            <span>Paweł Prusko · Senior UX &amp; AX Designer</span>
-            <span>Warsaw, Poland · pruskopawel@gmail.com</span>
+          {/* Selected Agentic & AI Projects */}
+          <div className="space-y-4 pt-4 border-t border-[#E4E4E7]">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#090A0F] border-b border-[#090A0F] pb-1 font-mono">
+              Selected Agentic &amp; AI Projects
+            </h2>
+
+            <div className="space-y-4 text-xs sm:text-sm leading-relaxed">
+              {cv.selectedProjects.map((p, idx) => (
+                <div key={idx} className="flex items-start gap-2">
+                  <span className="font-mono text-[#090A0F] mt-0.5">•</span>
+                  <p>
+                    <strong className="font-semibold text-[#090A0F]">{p.title}:</strong>{' '}
+                    <span className="text-[#52525B]">{p.description}</span>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Education & Continuous Specialization */}
+          <div className="space-y-6 pt-4 border-t border-[#E4E4E7]">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#090A0F] border-b border-[#090A0F] pb-1 font-mono">
+              Education &amp; Continuous Specialization
+            </h2>
+
+            {/* Formal Education & Technical Foundation */}
+            <div className="space-y-3">
+              <h3 className="text-xs sm:text-sm font-bold text-[#090A0F] font-mono">
+                Formal Education &amp; Technical Foundation
+              </h3>
+
+              <div className="space-y-3 text-xs sm:text-sm leading-relaxed">
+                {cv.educationFormal.map((edu, idx) => (
+                  <div key={idx} className="flex items-start gap-2">
+                    <span className="font-mono text-[#090A0F] mt-0.5">•</span>
+                    <div>
+                      <p className="font-mono">
+                        <strong className="text-[#090A0F] font-semibold">{edu.title}</strong> | {edu.institution} | {edu.year}
+                      </p>
+                      <p className="text-[#52525B] mt-0.5">({edu.details})</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Continuous Agent Experience (AX) & AI Specialization */}
+            <div className="space-y-3 pt-2">
+              <h3 className="text-xs sm:text-sm font-bold text-[#090A0F] font-mono">
+                Continuous Agent Experience (AX) &amp; AI Specialization
+              </h3>
+
+              <div className="space-y-3 text-xs sm:text-sm leading-relaxed">
+                {cv.educationContinuous.map((c, idx) => (
+                  <div key={idx} className="flex items-start gap-2">
+                    <span className="font-mono text-[#090A0F] mt-0.5">•</span>
+                    <p>
+                      <strong className="text-[#090A0F] font-semibold">{c.title}:</strong>{' '}
+                      <span className="text-[#52525B]">{c.details}</span>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+          {/* Legal RODO Consent Clause */}
+          <div className="pt-6 border-t border-[#E4E4E7] text-[10px] text-[#71717A] leading-relaxed font-sans">
+            <p>{cv.rodoConsent}</p>
           </div>
 
         </div>

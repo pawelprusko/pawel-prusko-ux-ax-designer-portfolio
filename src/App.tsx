@@ -20,7 +20,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#0F172A] flex flex-col font-['Plus_Jakarta_Sans',system-ui,sans-serif]">
+    <div className="min-h-screen bg-[#FFFFFF] text-[#090A0F] flex flex-col font-['Plus_Jakarta_Sans',system-ui,sans-serif]">
       {/* Top Bar Navigation */}
       <Header onOpenResume={() => setIsResumeModalOpen(true)} />
 
@@ -31,28 +31,28 @@ export default function App() {
       />
 
       {/* Featured Case Studies Section */}
-      <section id="case-studies" className="py-16 border-b border-[#E2E8F0] bg-[#FFFFFF]">
-        <div className="max-w-7xl mx-auto px-6 space-y-14">
+      <section id="case-studies" className="py-20 lg:py-24 border-b border-[#E4E4E7] bg-[#FFFFFF]">
+        <div className="max-w-7xl mx-auto px-6 space-y-16">
           
           {/* Section Lead */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2 text-xs font-mono font-medium text-indigo-700">
+            <div className="text-xs font-mono text-[#52525B]">
               <span>FEATURED WORK</span>
-              <span aria-hidden="true" className="text-slate-300">/</span>
-              <span className="text-slate-600 font-sans">Interactive AX Case Studies</span>
+              <span className="mx-2 text-[#E4E4E7]">/</span>
+              <span>Interactive AX Case Studies</span>
             </div>
 
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0F172A]">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#090A0F]">
                   Autonomous Workflows, Generative UI &amp; High-Stakes HITL
                 </h2>
-                <p className="text-sm sm:text-base text-[#475569] mt-1 max-w-3xl leading-relaxed">
+                <p className="text-sm sm:text-base text-[#52525B] mt-1 max-w-3xl leading-relaxed">
                   Three deep-dive case studies showcasing how interaction design tames stochastic model outputs into auditable, high-trust enterprise software.
                 </p>
               </div>
 
-              <div className="text-xs text-[#475569] font-medium hidden lg:block">
+              <div className="text-xs font-mono text-[#52525B] hidden lg:block">
                 All 3 prototypes feature live interactive mockups
               </div>
             </div>

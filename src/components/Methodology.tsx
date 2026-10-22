@@ -1,36 +1,30 @@
 import React from 'react';
 import { 
   Compass, 
-  Layers, 
-  CheckCircle2, 
+  Shield, 
   Code2, 
-  Terminal, 
-  BrainCircuit, 
-  BookOpen, 
-  ShieldCheck, 
-  FileCheck,
-  Cpu
+  Layers
 } from 'lucide-react';
 
 export const Methodology: React.FC = () => {
   return (
-    <section id="framework" className="py-16 border-b border-[#E2E8F0] bg-[#FFFFFF]">
+    <section id="framework" className="py-20 lg:py-24 border-b border-[#E4E4E7] bg-[#FFFFFF]">
       <div className="max-w-7xl mx-auto px-6 space-y-12">
         
         {/* Section Header */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-xs font-mono font-medium text-indigo-700">
+          <div className="text-xs font-mono text-[#52525B]">
             <span>METHODOLOGY &amp; TECHNICAL TOOLKIT</span>
-            <span aria-hidden="true" className="text-slate-300">/</span>
-            <span className="text-slate-600 font-sans">Cognitive AI Alignment</span>
+            <span className="mx-2 text-[#E4E4E7]">/</span>
+            <span>Cognitive AI Alignment</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0F172A]">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#090A0F]">
             Human-Agent Alignment &amp; Interaction Frameworks
           </h2>
 
-          <p className="text-sm sm:text-base text-[#475569] max-w-3xl leading-relaxed">
-            Pioneering the transition from static graphical user interfaces (GUI) to non-deterministic Agent Experiences (AX). All design solutions are grounded in industry-standard human-AI interaction frameworks.
+          <p className="text-sm sm:text-base text-[#52525B] max-w-3xl leading-relaxed">
+            Leading the paradigm shift from static graphical user interfaces (GUI) to non-deterministic Agent Experiences (AX). All design solutions are grounded in established human-AI interaction frameworks.
           </p>
         </div>
 
@@ -38,64 +32,58 @@ export const Methodology: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
           {/* Google PAIR Guidebook Card */}
-          <div className="border border-[#E2E8F0] rounded-xl p-6 sm:p-8 bg-[#F8FAFC] space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded bg-indigo-100 text-indigo-800">
-                  <Compass className="w-4 h-4" />
-                </span>
-                <h3 className="text-base font-bold text-[#0F172A]">Google PAIR Guidebook Alignment</h3>
-              </div>
-              <span className="text-xs font-mono text-indigo-700">People + AI Research</span>
+          <div className="border border-[#E4E4E7] rounded-lg p-6 sm:p-8 bg-[#FAFAFA] space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E4E4E7]">
+              <h3 className="text-sm font-bold text-[#090A0F] font-mono uppercase">
+                Google PAIR Guidebook Alignment
+              </h3>
+              <span className="text-xs font-mono text-[#52525B]">People + AI Research</span>
             </div>
 
-            <p className="text-xs sm:text-sm text-[#475569] leading-relaxed">
-              Applying PAIR guidelines to bridge user expectations and statistical outputs:
+            <p className="text-xs sm:text-sm text-[#52525B] leading-relaxed">
+              Applying PAIR guidelines to bridge user expectations and statistical model outputs:
             </p>
 
-            <ul className="space-y-2.5 text-xs text-[#0F172A]">
+            <ul className="space-y-3 text-xs text-[#090A0F]">
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span className="font-mono text-[#52525B] mt-0.5">•</span>
                 <span><strong>Calibrated Mental Models:</strong> Explicitly communicating model boundaries, latency expectations, and non-deterministic variations.</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span className="font-mono text-[#52525B] mt-0.5">•</span>
                 <span><strong>Supervised Co-Creation:</strong> Presenting agent proposals as editable drafts rather than irrevocable decrees.</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span className="font-mono text-[#52525B] mt-0.5">•</span>
                 <span><strong>Graceful Failure Handling:</strong> Providing deterministic rollback UI and structured escalation paths when models hallucinate.</span>
               </li>
             </ul>
           </div>
 
           {/* Microsoft HAX Toolkit Card */}
-          <div className="border border-[#E2E8F0] rounded-xl p-6 sm:p-8 bg-[#F8FAFC] space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded bg-emerald-100 text-emerald-800">
-                  <ShieldCheck className="w-4 h-4" />
-                </span>
-                <h3 className="text-base font-bold text-[#0F172A]">Microsoft HAX Toolkit Standards</h3>
-              </div>
-              <span className="text-xs font-mono text-emerald-700">18 Human-AI Heuristics</span>
+          <div className="border border-[#E4E4E7] rounded-lg p-6 sm:p-8 bg-[#FAFAFA] space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E4E4E7]">
+              <h3 className="text-sm font-bold text-[#090A0F] font-mono uppercase">
+                Microsoft HAX Toolkit Standards
+              </h3>
+              <span className="text-xs font-mono text-[#52525B]">18 Human-AI Heuristics</span>
             </div>
 
-            <p className="text-xs sm:text-sm text-[#475569] leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#52525B] leading-relaxed">
               Integrating HAX principles across all four interaction stages:
             </p>
 
-            <ul className="space-y-2.5 text-xs text-[#0F172A]">
+            <ul className="space-y-3 text-xs text-[#090A0F]">
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>G1 · Make Clear What the System Can Do:</strong> Context-aware suggestion chips anchored to known API capacities.</span>
+                <span className="font-mono text-[#52525B] mt-0.5">•</span>
+                <span><strong>G1 · Make Clear What the System Can Do:</strong> Context-aware action recommendations anchored strictly to verified tool capacities.</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span><strong>G9 · Support Efficient Correction:</strong> In-line parameter fine-tuning without forcing the user to regenerate prompts from scratch.</span>
+                <span className="font-mono text-[#52525B] mt-0.5">•</span>
+                <span><strong>G9 · Support Efficient Correction:</strong> In-line parameter fine-tuning without forcing the operator to restart workflows.</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <span className="font-mono text-[#52525B] mt-0.5">•</span>
                 <span><strong>G11 · Make Clear Why the System Did What It Did:</strong> Explainable AI (XAI) feature attribution breakdown with factor weighting.</span>
               </li>
             </ul>
@@ -106,74 +94,44 @@ export const Methodology: React.FC = () => {
         {/* 4 Core Competencies Grid matching CV */}
         <div className="space-y-4 pt-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-[#0F172A]">Core Competencies &amp; Technical Capabilities</h3>
-            <span className="text-xs text-slate-500 font-mono">Senior Product / Lead AX</span>
+            <h3 className="text-base font-bold text-[#090A0F] font-mono uppercase">
+              Core Competencies &amp; Technical Capabilities
+            </h3>
+            <span className="text-xs text-[#52525B] font-mono">Senior UX / Agent Experience Designer</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
             {/* Competency 1 */}
-            <div className="p-5 rounded-lg border border-[#E2E8F0] bg-white space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded bg-indigo-50 text-indigo-700">
-                  <BrainCircuit className="w-4 h-4" />
-                </span>
-                <h4 className="text-xs font-bold text-[#0F172A]">1. Agent Experience (AX)</h4>
-              </div>
-              <p className="text-xs text-[#475569] leading-relaxed">
-                Autonomous agent workflows, parallel state visualization, persona orchestration, thinking progress streamers, and ambient co-pilot interfaces.
+            <div className="p-5 rounded border border-[#E4E4E7] bg-white space-y-2">
+              <h4 className="text-xs font-bold text-[#090A0F] font-mono uppercase">1. Agent Experience (AX)</h4>
+              <p className="text-xs text-[#52525B] leading-relaxed">
+                Autonomous agent workflows, parallel state visualization, persona orchestration, and progressive disclosure interfaces.
               </p>
-              <div className="text-[11px] font-mono text-slate-500 pt-1 border-t border-slate-100">
-                Multi-Agent · CoT · Orchestration
-              </div>
             </div>
 
             {/* Competency 2 */}
-            <div className="p-5 rounded-lg border border-[#E2E8F0] bg-white space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded bg-amber-50 text-amber-800">
-                  <ShieldCheck className="w-4 h-4" />
-                </span>
-                <h4 className="text-xs font-bold text-[#0F172A]">2. Algorithmic Trust &amp; HITL</h4>
-              </div>
-              <p className="text-xs text-[#475569] leading-relaxed">
-                Human-in-the-Loop decision gates, Automation Bias mitigation, Explainable AI (XAI) feature attribution, and cryptographically verifiable audit trails.
+            <div className="p-5 rounded border border-[#E4E4E7] bg-white space-y-2">
+              <h4 className="text-xs font-bold text-[#090A0F] font-mono uppercase">2. Algorithmic Trust &amp; HITL</h4>
+              <p className="text-xs text-[#52525B] leading-relaxed">
+                Human-in-the-Loop decision gates, Automation Bias mitigation, Explainable AI (XAI) feature attribution, and audit trails.
               </p>
-              <div className="text-[11px] font-mono text-slate-500 pt-1 border-t border-slate-100">
-                HITL · SHAP · Blast Radius
-              </div>
             </div>
 
             {/* Competency 3 */}
-            <div className="p-5 rounded-lg border border-[#E2E8F0] bg-white space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded bg-emerald-50 text-emerald-700">
-                  <Code2 className="w-4 h-4" />
-                </span>
-                <h4 className="text-xs font-bold text-[#0F172A]">3. Rapid Prototyping &amp; Code</h4>
-              </div>
-              <p className="text-xs text-[#475569] leading-relaxed">
-                Engineering functional prototypes with Cursor, Claude, v0, React 19, TypeScript, Tailwind CSS, LangChain, and Python to validate interactions with live models.
+            <div className="p-5 rounded border border-[#E4E4E7] bg-white space-y-2">
+              <h4 className="text-xs font-bold text-[#090A0F] font-mono uppercase">3. Rapid Prototyping &amp; Code</h4>
+              <p className="text-xs text-[#52525B] leading-relaxed">
+                Engineering functional prototypes with Cursor, Claude, React 19, TypeScript, Tailwind CSS, and Python to validate interactions with live models.
               </p>
-              <div className="text-[11px] font-mono text-slate-500 pt-1 border-t border-slate-100">
-                React 19 · TS · Cursor · Python
-              </div>
             </div>
 
             {/* Competency 4 */}
-            <div className="p-5 rounded-lg border border-[#E2E8F0] bg-white space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="p-1.5 rounded bg-slate-100 text-slate-800">
-                  <Layers className="w-4 h-4" />
-                </span>
-                <h4 className="text-xs font-bold text-[#0F172A]">4. Core Enterprise Design</h4>
-              </div>
-              <p className="text-xs text-[#475569] leading-relaxed">
-                Complex enterprise SaaS architecture, design system tokenization, high-stakes domain user research (financial risk, compliance, distributed telemetry).
+            <div className="p-5 rounded border border-[#E4E4E7] bg-white space-y-2">
+              <h4 className="text-xs font-bold text-[#090A0F] font-mono uppercase">4. Core Enterprise Design</h4>
+              <p className="text-xs text-[#52525B] leading-relaxed">
+                Complex enterprise SaaS architecture, design system tokenization, high-stakes domain user research (financial risk, compliance).
               </p>
-              <div className="text-[11px] font-mono text-slate-500 pt-1 border-t border-slate-100">
-                Design Systems · IA · Research
-              </div>
             </div>
 
           </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, MapPin, ExternalLink, Copy, Check, Terminal, FileText } from 'lucide-react';
+import { Mail, MapPin, ExternalLink, Copy, Check, FileText } from 'lucide-react';
 import { RESUME_DATA } from '../data/portfolioData';
 
 interface FooterProps {
@@ -19,7 +19,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
   const atsSummaryJson = {
     candidate: {
       name: "Paweł Prusko",
-      target_roles: ["Senior Agent Experience (AX) Designer", "Staff UX Designer", "Lead AI Product Designer"],
+      title: "Senior UX / Agent Experience Designer",
+      target_roles: ["Senior UX / Agent Experience Designer", "Staff AX Designer", "Lead AI Product Designer"],
       experience_years: "7+",
       location: "Warsaw, Poland (EU Citizen, Open to Global Remote)",
       email: "pruskopawel@gmail.com",
@@ -37,31 +38,31 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
   };
 
   return (
-    <footer id="contact" className="bg-[#FFFFFF] border-t border-[#E2E8F0] pt-16 pb-12">
+    <footer id="contact" className="bg-[#FFFFFF] border-t border-[#E4E4E7] pt-20 pb-16">
       <div className="max-w-7xl mx-auto px-6 space-y-12">
         
         {/* Contact Invitation Split */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
           <div className="lg:col-span-7 space-y-4">
-            <div className="flex items-center gap-2 text-xs font-mono font-medium text-indigo-700">
-              <span>GET IN TOUCH</span>
-              <span aria-hidden="true" className="text-slate-300">/</span>
-              <span className="text-slate-600 font-sans">Opportunities &amp; Collaborations</span>
+            <div className="text-xs font-mono text-[#52525B]">
+              <span>CONTACT</span>
+              <span className="mx-2 text-[#E4E4E7]">/</span>
+              <span>Inquiries &amp; Collaborations</span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0F172A]">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#090A0F]">
               Let's Architect the Future of Human-Agent Systems
             </h2>
 
-            <p className="text-sm text-[#475569] leading-relaxed max-w-xl">
-              Currently open to Senior &amp; Staff AX / AI Product Design roles with pioneering AI labs, autonomous agent platforms, and high-stakes enterprise software teams.
+            <p className="text-sm text-[#52525B] leading-relaxed max-w-xl">
+              Currently available for Senior UX / Agent Experience Designer roles with pioneering AI labs, autonomous multi-agent platforms, and high-stakes enterprise software teams.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <a
                 href="mailto:pruskopawel@gmail.com"
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-[#0F172A] rounded-md hover:bg-slate-800 transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-[#090A0F] rounded-md hover:bg-[#27272A] transition-colors shadow-xs"
               >
                 <Mail className="w-3.5 h-3.5" />
                 <span>Email Paweł Prusko</span>
@@ -69,65 +70,59 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
 
               <button
                 onClick={handleCopyEmail}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-medium text-slate-700 bg-[#F8FAFC] border border-[#E2E8F0] rounded-md hover:bg-slate-100 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-medium text-[#090A0F] bg-[#FAFAFA] border border-[#E4E4E7] rounded-md hover:bg-[#F4F4F5] transition-colors"
               >
-                {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
-                <span>{copiedEmail ? 'Copied to Clipboard' : 'Copy Email'}</span>
+                {copiedEmail ? <Check className="w-3.5 h-3.5 text-[#090A0F]" /> : <Copy className="w-3.5 h-3.5 text-[#52525B]" />}
+                <span>{copiedEmail ? 'Copied' : 'Copy Email'}</span>
               </button>
 
               <button
                 onClick={onOpenResume}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-md hover:bg-indigo-100 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-medium text-[#090A0F] bg-[#FAFAFA] border border-[#E4E4E7] rounded-md hover:bg-[#F4F4F5] transition-colors"
               >
                 <FileText className="w-3.5 h-3.5" />
-                <span>View Executive CV</span>
+                <span>Executive CV</span>
               </button>
             </div>
           </div>
 
-          <div className="lg:col-span-5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-6 space-y-4">
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F172A]">
-              Direct Contact &amp; Details
+          <div className="lg:col-span-5 bg-[#FAFAFA] border border-[#E4E4E7] rounded-lg p-6 space-y-4">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#090A0F]">
+              Direct Credentials
             </h3>
 
-            <div className="space-y-3 text-xs text-[#475569]">
+            <div className="space-y-3 text-xs text-[#52525B] font-mono">
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-slate-500">
-                  <Mail className="w-3.5 h-3.5 text-slate-400" /> Email:
-                </span>
-                <a href="mailto:pruskopawel@gmail.com" className="font-mono text-[#0F172A] hover:underline font-medium">
+                <span>Email:</span>
+                <a href="mailto:pruskopawel@gmail.com" className="text-[#090A0F] hover:underline font-semibold">
                   pruskopawel@gmail.com
                 </a>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-slate-500">
-                  <MapPin className="w-3.5 h-3.5 text-slate-400" /> Location:
-                </span>
-                <span className="text-[#0F172A] font-medium">
+                <span>Location:</span>
+                <span className="text-[#090A0F]">
                   Warsaw, Poland (CET / UTC+1)
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-slate-500">
-                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" /> Professional:
-                </span>
+                <span>Links:</span>
                 <div className="flex items-center gap-3">
                   <a 
                     href="https://linkedin.com/in/pawel-prusko" 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="text-indigo-600 hover:underline font-medium"
+                    className="text-[#090A0F] hover:underline"
                   >
                     LinkedIn
                   </a>
-                  <span className="text-slate-300">·</span>
+                  <span className="text-[#E4E4E7]">·</span>
                   <a 
                     href="https://github.com" 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="text-indigo-600 hover:underline font-medium"
+                    className="text-[#090A0F] hover:underline"
                   >
                     GitHub
                   </a>
@@ -135,12 +130,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
               </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-200">
+            <div className="pt-2 border-t border-[#E4E4E7]">
               <button
                 onClick={() => setShowAtsBlock(!showAtsBlock)}
-                className="w-full flex items-center justify-between text-[11px] font-mono text-slate-500 hover:text-[#0F172A] transition-colors"
+                className="w-full flex items-center justify-between text-[11px] font-mono text-[#52525B] hover:text-[#090A0F] transition-colors"
               >
-                <span>{showAtsBlock ? 'Hide ATS / AI Recruiter Schema' : 'Show ATS / AI-Agent Machine Readable Block'}</span>
+                <span>{showAtsBlock ? 'Hide ATS / AI-Agent Block' : 'Show ATS / AI-Agent Machine Readable Schema'}</span>
                 <span>{showAtsBlock ? '▲' : '▼'}</span>
               </button>
             </div>
@@ -148,31 +143,28 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
 
         </div>
 
-        {/* ATS / AI-AGENT READABLE SUMMARY BLOCK */}
+        {/* ATS SUMMARY BLOCK */}
         {showAtsBlock && (
-          <div className="border border-[#E2E8F0] rounded-lg bg-slate-900 text-slate-100 p-5 space-y-2 animate-in fade-in duration-200">
-            <div className="flex items-center justify-between text-xs font-mono text-slate-400 pb-2 border-b border-slate-800">
-              <span className="flex items-center gap-1.5 text-emerald-400">
-                <Terminal className="w-3.5 h-3.5" />
-                Structured Metadata for ATS &amp; LLM Evaluators
-              </span>
+          <div className="border border-[#090A0F] rounded bg-[#090A0F] text-[#FAFAFA] p-5 space-y-2">
+            <div className="flex items-center justify-between text-xs font-mono text-[#A1A1AA] pb-2 border-b border-zinc-800">
+              <span>Structured Metadata for ATS &amp; LLM Evaluators</span>
               <span>application/ld+json</span>
             </div>
-            <pre className="text-[11px] font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap leading-relaxed">
+            <pre className="text-[11px] font-mono text-[#E4E4E7] overflow-x-auto whitespace-pre-wrap leading-relaxed">
               {JSON.stringify(atsSummaryJson, null, 2)}
             </pre>
           </div>
         )}
 
         {/* Quiet Editorial Footer Bottom */}
-        <div className="pt-8 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-4 text-xs text-[#475569]">
+        <div className="pt-8 border-t border-[#E4E4E7] flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-[#52525B]">
           <p>
-            © {new Date().getFullYear()} Paweł Prusko. Designed with Swiss typography principles &amp; React 19.
+            © {new Date().getFullYear()} Paweł Prusko. Senior UX / Agent Experience Designer.
           </p>
-          <div className="flex items-center gap-4 text-[11px] font-mono">
-            <span>WCAG 2.1 AA Compliant</span>
-            <span aria-hidden="true">·</span>
-            <span>Zero Context Drift Guaranteed</span>
+          <div className="flex items-center gap-4">
+            <span>Pure Monochrome Edition</span>
+            <span>·</span>
+            <span>Zero Context Drift</span>
           </div>
         </div>
 
