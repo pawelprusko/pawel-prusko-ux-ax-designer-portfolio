@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
+import { OrchestrationProcess } from './components/OrchestrationProcess';
 import { CaseStudyOrchestration } from './components/CaseStudyOrchestration';
 import { CaseStudyGenerativeUI } from './components/CaseStudyGenerativeUI';
 import { CaseStudyEnterpriseCopilot } from './components/CaseStudyEnterpriseCopilot';
@@ -29,6 +30,9 @@ export default function App() {
         onOpenPlayground={handleOpenPlayground} 
         onOpenResume={() => setIsResumeModalOpen(true)} 
       />
+
+      {/* New Section: AX Discovery & Orchestration Process */}
+      <OrchestrationProcess />
 
       {/* Featured Case Studies Section */}
       <section id="case-studies" className="py-20 lg:py-24 border-b border-[#E4E4E7] bg-[#FFFFFF]">

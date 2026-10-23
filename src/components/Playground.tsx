@@ -122,7 +122,7 @@ export const Playground: React.FC = () => {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h3 className="text-sm font-bold text-[#090A0F] font-mono uppercase">
-                  Progressive Disclosure &amp; Chain-of-Thought Streamer
+                  Progressive Disclosure &amp; Chain-of-Thought (CoT) Streamer
                 </h3>
                 <p className="text-xs text-[#52525B] mt-0.5">
                   Demonstrates how intelligent interfaces maintain operator attention during high-latency reasoning passes.
@@ -218,7 +218,7 @@ export const Playground: React.FC = () => {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h3 className="text-sm font-bold text-[#090A0F] font-mono uppercase">
-                  HITL Action Card with In-Line Parameter Modification
+                  Human-in-the-Loop (HITL) Action Card with In-Line Parameter Modification
                 </h3>
                 <p className="text-xs text-[#52525B] mt-0.5">
                   Simulates granular supervisory control where humans can modify constraints before execution.
@@ -374,7 +374,7 @@ export const Playground: React.FC = () => {
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h3 className="text-sm font-bold text-[#090A0F] font-mono uppercase">
-                  Verifiable RAG Citation Footnotes &amp; Source Inspection Pane
+                  Verifiable Retrieval-Augmented Generation (RAG) Citation Footnotes &amp; Source Inspection Pane
                 </h3>
                 <p className="text-xs text-[#52525B] mt-0.5">
                   Click any numbered footnote tag [1], [2], [3] in the synthesized response to inspect the exact ground-truth database record.

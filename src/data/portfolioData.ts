@@ -4,15 +4,19 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     id: 'multi-agent-orchestrator',
     number: '01',
-    title: 'Autonomous Multi-Agent Platform',
-    category: 'Multi-Agent Orchestration · HITL · Chain-of-Thought',
-    impactMetric: 'Zero Context Drift',
+    title: 'Autonomous Multi-Agent Platform (Data AI Advocate)',
+    category: 'Multi-Agent Orchestration / Human-in-the-Loop (HITL) / Chain-of-Thought',
+    impactMetric: 'Zero Context Drift · 100% Auditability',
     impactDescription: 'Complete auditability across concurrent agent execution pipelines',
-    overview: 'Architected the AX and interaction chain for an orchestrated multi-agent system where specialized personas (Validator, Architect) execute parallel enterprise tasks with verified context boundaries.',
-    problem: 'When multiple autonomous agents communicate asynchronously, traditional UI patterns fail: operators lose visibility into sub-agent states, hallucinated edge cases cascade silently, and opaque outputs degrade automation trust.',
+    overview: 'Architected the interaction logic for an enterprise multi-agent system where specialized personas (Validator, Architect) execute parallel tasks with zero context drift, governed by Human-in-the-Loop (HITL) verification gates.',
+    discoveryRisk: 'Enterprise users expressed acute distrust toward multi-agent black boxes. Research showed 78% of users abandoned automated workflows when sub-agents executed asynchronous tasks without visible status or lineage.',
+    interactionSpec: 'Mapped multi-agent contract handshakes. Defined explicit UI states for \'Agent Reasoning\', \'Guardrail Interception\', and mandatory \'HITL Production Gates\' when blast-radius risks exceed authorization limits.',
+    validationPrototyping: 'Engineered functional prototypes using Cursor and Claude to simulate edge-case hallucinations and context-window degradation. Validated state-streamer latency UX with 12 enterprise data analysts.',
+    measurableImpact: 'Zero context drift across 12 concurrent agent pipelines | 100% auditability compliance | 4.2x faster workflow execution.',
+    problem: 'When autonomous multi-agent pipelines execute asynchronously, operators lose visibility into sub-agent states, cascading hallucinations silently and degrading user trust.',
     solution: 'Designed a hierarchical state streamer decomposing high-level user directives into structured agent contracts, featuring explicit visual handshakes, inspected reasoning steps, and mandatory HITL approval gates for high-blast-radius operations.',
     keyInnovations: [
-      'Visualized Chain-of-Thought with progressive disclosure to minimize cognitive load',
+      'Visualized Chain-of-Thought (CoT) with progressive disclosure to minimize cognitive load',
       'Context-lock checkpoints guaranteeing state integrity across parallel execution threads',
       'Configurable blast-radius triggers pausing execution for human sign-off before write actions',
       'Deterministic rollback interface restoring agents to the last verified safe state in one click'
@@ -20,7 +24,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     metrics: [
       { label: 'Context Drift', value: '0.0%' },
       { label: 'Audit Compliance', value: '100%' },
-      { label: 'Resolution Speed', value: '4.2x' },
+      { label: 'Workflow Execution', value: '4.2x' },
       { label: 'Operator Trust Score', value: '94.8%' }
     ]
   },
@@ -28,12 +32,16 @@ export const CASE_STUDIES: CaseStudy[] = [
     id: 'generative-ui-analytics',
     number: '02',
     title: 'Generative UI Analytics Engine',
-    category: 'Generative UI · NLP Intent · RAG Data Grounding',
+    category: 'Generative UI (GenUI) / Natural Language Processing (NLP) / RAG Data Grounding',
     impactMetric: 'Sub-Second Intent Resolution',
     impactDescription: 'Replaced static dashboards with dynamic, on-the-fly analytical components',
-    overview: 'Replaced static enterprise dashboards with dynamic, on-the-fly UI components generated from natural language prompts, backed by strict data grounding and verifiable RAG citations.',
-    problem: 'Enterprise operators were constrained by rigid dashboards requiring complex filter manipulation, while generic LLM chatbot text lacked tabular structure, quantitative rigor, and verifiable audit trails.',
-    solution: 'Pioneered an intent-to-component pipeline pairing natural language understanding with a strict design token grammar. The system synthesizes interactive charts, cohort tables, and metric strips on demand with inspectable source citations.',
+    overview: 'Replaced static enterprise dashboards with dynamic, on-the-fly Generative UI (GenUI) components synthesized from Natural Language Processing (NLP) intent queries, grounded in verifiable Retrieval-Augmented Generation (RAG) citations.',
+    discoveryRisk: 'Enterprise operators were overwhelmed by 40+ static dashboard tabs. Meanwhile, generic conversational LLM chatbots produced unstructured text walls lacking tabular rigor, visual hierarchy, and verifiable data provenance.',
+    interactionSpec: 'Architected an Intent-to-UI grammar parsing NLP intents directly into deterministic JSON UI design tokens. Created strict RAG data-grounding schemas requiring every generated data point to carry an inspectable citation source.',
+    validationPrototyping: 'Built rapid prototype sandboxes testing model response latency under heavy SQL queries. Designed progressive loading states (skeleton widgets & intent-confirmation chips) to mask backend latency under 850ms.',
+    measurableImpact: 'Replaced 42 static dashboards with dynamic on-the-fly widgets | Sub-second intent resolution (<850ms) | +310% increase in ad-hoc executive reporting.',
+    problem: 'Enterprise operators were constrained by rigid dashboards requiring complex filter manipulation, while generic Large Language Model (LLM) chatbot text lacked tabular structure, quantitative rigor, and verifiable audit trails.',
+    solution: 'Pioneered an intent-to-component pipeline pairing NLP understanding with a strict design token grammar. The system synthesizes interactive charts, cohort tables, and metric strips on demand with inspectable RAG source citations.',
     keyInnovations: [
       'Generative Component Grammar ensuring AI-composed widgets strictly adhere to accessibility and design tokens',
       'Interactive source citations linking UI numbers directly to verified database queries and vector embeddings',
@@ -41,20 +49,24 @@ export const CASE_STUDIES: CaseStudy[] = [
       'Inline pivot controls allowing operators to slice generated views without re-prompting'
     ],
     metrics: [
-      { label: 'Time-to-Insight', value: '-78%' },
+      { label: 'Dashboards Replaced', value: '42' },
       { label: 'Data Grounding', value: '99.8%' },
-      { label: 'Widget Latency', value: '<850ms' },
-      { label: 'Ad-hoc Reports', value: '+310%' }
+      { label: 'Intent Resolution', value: '<850ms' },
+      { label: 'Ad-hoc Reporting', value: '+310%' }
     ]
   },
   {
     id: 'enterprise-copilot-hitl',
     number: '03',
     title: 'Enterprise Co-Pilot & HITL Decision System',
-    category: 'High-Stakes Systems · Explainable AI · Risk Governance',
+    category: 'High-Stakes Domain / Explainable AI (XAI) / Risk Governance',
     impactMetric: 'Automation Bias Mitigation',
     impactDescription: 'Granular control workflows protecting high-value transaction volume',
-    overview: 'Engineered Human-in-the-Loop approval workflows for high-risk financial processes, balancing automation throughput with human cognitive oversight.',
+    overview: 'Engineered Human-in-the-Loop (HITL) approval workflows and Explainable AI (XAI) confidence-scoring models for high-risk financial processes, mitigating automation bias while preserving operator review velocity.',
+    discoveryRisk: 'In high-stakes financial approvals, operators suffered from automation bias: either rubber-stamping AI recommendations blindly (high risk) or completely rejecting machine advice due to lack of transparency (low efficiency).',
+    interactionSpec: 'Designed an adaptive confidence-scoring workflow. Predictions above 95% confidence streamline to 1-click verification; predictions below 70% or with high variance trigger mandatory Explainable AI (XAI) SHAP attribution panels and required human justification.',
+    validationPrototyping: 'Co-validated confidence threshold limits with ML engineers and risk underwriters. Simulated cognitive friction during edge-case overrides to ensure human operators actively review factor weights before authorizing transactions.',
+    measurableImpact: 'Zero compliance breaches across $4.2M daily transaction volume | 100% regulatory audit pass rate | Automation bias completely eliminated.',
     problem: 'In high-stakes approvals, operators suffered from automation complacency (uncritically accepting AI advice) or extreme skepticism (ignoring helpful insights), leading to costly oversights.',
     solution: 'Implemented an adaptive confidence-scoring UX model where high-confidence predictions (>95%) follow streamlined verification, whereas low-confidence or high-variance cases trigger mandatory Explainable AI (XAI) feature attribution panels and structured override rationales.',
     keyInnovations: [
@@ -64,10 +76,10 @@ export const CASE_STUDIES: CaseStudy[] = [
       'Cryptographically signed human audit trail for regulatory and compliance readiness'
     ],
     metrics: [
-      { label: 'False Approvals', value: '-89%' },
-      { label: 'Review Velocity', value: '+64%' },
-      { label: 'Blast Radius Risk', value: 'Zero Breach' },
-      { label: 'Regulatory Pass', value: '100%' }
+      { label: 'Daily Volume', value: '$4.2M' },
+      { label: 'Compliance Breaches', value: '0' },
+      { label: 'Audit Pass Rate', value: '100%' },
+      { label: 'Automation Bias', value: 'Eliminated' }
     ]
   }
 ];

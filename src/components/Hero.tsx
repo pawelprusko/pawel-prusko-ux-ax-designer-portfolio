@@ -14,7 +14,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPlayground, onOpenResume }) =>
         {/* Category Tag (Clean Monochrome Text) */}
         <div className="flex items-center gap-2 text-xs font-mono tracking-wider uppercase text-[#52525B]">
           <span className="w-1.5 h-1.5 rounded-full bg-[#090A0F] inline-block"></span>
-          <span>Senior UX / Agent Experience Designer · Executive Portfolio</span>
+          <span>EXECUTIVE PORTFOLIO — 2026 EDITION</span>
         </div>
 
         {/* Large Main Display Headline */}
@@ -24,7 +24,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPlayground, onOpenResume }) =>
 
         {/* Subheadline */}
         <p className="text-base sm:text-lg text-[#52525B] leading-relaxed max-w-3xl">
-          Senior UX / Agent Experience Designer with 7+ years of experience bridging abstract Large Language Models (LLMs) and end-user cognition. Specializing in Multi-Agent Workflows, Generative UI, and Human-in-the-Loop (HITL) systems.
+          Senior UX and Agent Experience (AX) Designer with 7+ years of experience bridging abstract Large Language Models (LLMs) and end-user cognition. Specializing in Multi-Agent Workflows, Generative UI (GenUI), and Human-in-the-Loop (HITL) systems.
         </p>
 
         {/* The Two Main CTA Buttons */}

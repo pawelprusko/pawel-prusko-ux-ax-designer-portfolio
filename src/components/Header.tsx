@@ -25,6 +25,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenResume }) => {
         {/* Zone 2: Clean single-line text navigation links */}
         <nav className="hidden md:flex items-center gap-8 text-xs sm:text-sm font-medium text-[#52525B]">
           <a 
+            href="#process" 
+            className="hover:text-[#090A0F] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-4"
+          >
+            Process
+          </a>
+          <a 
             href="#case-studies" 
             className="hover:text-[#090A0F] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-4"
           >
@@ -54,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenResume }) => {
         <div className="flex items-center gap-4 shrink-0">
           <span className="hidden xl:inline-flex items-center gap-1.5 text-xs text-[#52525B] font-mono">
             <span className="w-1.5 h-1.5 rounded-full bg-[#090A0F]"></span>
-            Available for Senior Roles
+            Available ASAP
           </span>
 
           <button

@@ -47,7 +47,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
     const d = EXACT_PDF_CV_DATA;
     const markdown = `# ${d.name}
 **${d.roleTitle}**
-Tel.: ${d.phone} | E-mail: ${d.email} | Localization: ${d.localization} | Portfolio: ${d.portfolioLink}
+Tel.: ${d.phone} | E-mail: ${d.email} | Localization: ${d.localization}
 
 ## Executive Summary
 ${d.executiveSummary}
@@ -163,8 +163,6 @@ ${d.rodoConsent}
               <span>E-mail: <a href={`mailto:${cv.email}`} className="text-[#090A0F] hover:underline font-semibold">{cv.email}</a></span>
               <span>|</span>
               <span>Localization: <strong className="text-[#090A0F]">{cv.localization}</strong></span>
-              <span>|</span>
-              <span>Link to Portfolio: <a href="#case-studies" onClick={onClose} className="text-[#090A0F] underline font-semibold">Interactive Showcases</a></span>
             </div>
           </div>
 
@@ -255,7 +253,7 @@ ${d.rodoConsent}
           </div>
 
           {/* Selected Agentic & AI Projects */}
-          <div className="space-y-4 pt-4 border-t border-[#E4E4E7]">
+          <div className="space-y-4 pt-2">
             <h2 className="text-sm font-bold uppercase tracking-wider text-[#090A0F] border-b border-[#090A0F] pb-1 font-mono">
               Selected Agentic &amp; AI Projects
             </h2>
@@ -274,7 +272,7 @@ ${d.rodoConsent}
           </div>
 
           {/* Education & Continuous Specialization */}
-          <div className="space-y-6 pt-4 border-t border-[#E4E4E7]">
+          <div className="space-y-6 pt-2">
             <h2 className="text-sm font-bold uppercase tracking-wider text-[#090A0F] border-b border-[#090A0F] pb-1 font-mono">
               Education &amp; Continuous Specialization
             </h2>
@@ -322,7 +320,7 @@ ${d.rodoConsent}
           </div>
 
           {/* Legal RODO Consent Clause */}
-          <div className="pt-6 border-t border-[#E4E4E7] text-[10px] text-[#71717A] leading-relaxed font-sans">
+          <div className="pt-4 text-[10px] text-[#71717A] leading-relaxed font-sans">
             <p>{cv.rodoConsent}</p>
           </div>
 

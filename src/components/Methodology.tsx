@@ -114,7 +114,7 @@ export const Methodology: React.FC = () => {
             <div className="p-5 rounded border border-[#E4E4E7] bg-white space-y-2">
               <h4 className="text-xs font-bold text-[#090A0F] font-mono uppercase">2. Algorithmic Trust &amp; HITL</h4>
               <p className="text-xs text-[#52525B] leading-relaxed">
-                Human-in-the-Loop decision gates, Automation Bias mitigation, Explainable AI (XAI) feature attribution, and audit trails.
+                Human-in-the-Loop (HITL) decision gates, Automation Bias mitigation, Explainable AI (XAI) feature attribution, and audit trails.
               </p>
             </div>
 

@@ -99,34 +99,47 @@ export const CaseStudyGenerativeUI: React.FC = () => {
         </p>
       </div>
 
-      {/* Narrative Problem & Solution Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 pb-4 border-y border-[#E4E4E7]">
-        <div className="space-y-2">
-          <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-[#090A0F]">
-            01. The Interaction Challenge
-          </h3>
-          <p className="text-xs sm:text-sm text-[#52525B] leading-relaxed">
-            {caseData.problem}
+      {/* 3-Column Deep-Dive Process Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 pb-6 border-y border-[#E4E4E7]">
+        <div className="space-y-2 p-4 rounded bg-white border border-[#E4E4E7]">
+          <div className="text-[11px] font-mono font-bold text-[#090A0F] uppercase tracking-wider flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#090A0F]"></span>
+            01. Discovery &amp; Cognitive Risk
+          </div>
+          <p className="text-xs text-[#52525B] leading-relaxed">
+            {caseData.discoveryRisk}
           </p>
         </div>
-        <div className="space-y-2">
-          <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-[#090A0F]">
-            02. The Architectural Solution
-          </h3>
-          <p className="text-xs sm:text-sm text-[#52525B] leading-relaxed">
-            {caseData.solution}
+
+        <div className="space-y-2 p-4 rounded bg-white border border-[#E4E4E7]">
+          <div className="text-[11px] font-mono font-bold text-[#090A0F] uppercase tracking-wider flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#090A0F]"></span>
+            02. System Flow &amp; Interaction Spec
+          </div>
+          <p className="text-xs text-[#52525B] leading-relaxed">
+            {caseData.interactionSpec}
+          </p>
+        </div>
+
+        <div className="space-y-2 p-4 rounded bg-white border border-[#E4E4E7]">
+          <div className="text-[11px] font-mono font-bold text-[#090A0F] uppercase tracking-wider flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#090A0F]"></span>
+            03. Logic Validation &amp; Vibe Prototyping
+          </div>
+          <p className="text-xs text-[#52525B] leading-relaxed">
+            {caseData.validationPrototyping}
           </p>
         </div>
       </div>
 
-      {/* INTERACTIVE GENERATOR MOCKUP */}
+      {/* 04. ARCHITECTURAL SOLUTION & LIVE SIMULATOR */}
       <div className="space-y-4">
         
         {/* Prompt Selector Bar */}
         <div className="space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
             <span className="text-[#090A0F] font-semibold uppercase">
-              Intent-to-UI Simulator: Trigger or Enter Query
+              04. Architectural Solution &amp; Live Simulator
             </span>
             <span className="text-[#52525B]">WCAG AA / Design Token Compliant</span>
           </div>
@@ -344,14 +357,29 @@ export const CaseStudyGenerativeUI: React.FC = () => {
 
       </div>
 
-      {/* Metrics Row */}
-      <div className="pt-2 grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {caseData.metrics.map((m, idx) => (
-          <div key={idx} className="p-4 rounded border border-[#E4E4E7] bg-white">
-            <p className="font-mono text-xl font-bold text-[#090A0F] tabular-nums">{m.value}</p>
-            <p className="text-xs text-[#52525B] mt-1">{m.label}</p>
+      {/* 05. MEASURABLE IMPACT */}
+      <div className="space-y-4 pt-2">
+        <div className="p-4 rounded-lg border border-[#090A0F] bg-white text-xs font-mono">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="font-bold text-[#090A0F] uppercase">
+              05. Measurable Impact
+            </span>
+            <span className="text-[#52525B]">/ Verified Outcomes</span>
           </div>
-        ))}
+          <p className="text-[#090A0F] font-semibold text-xs sm:text-sm">
+            {caseData.measurableImpact}
+          </p>
+        </div>
+
+        {/* Metrics Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {caseData.metrics.map((m, idx) => (
+            <div key={idx} className="p-4 rounded border border-[#E4E4E7] bg-white">
+              <p className="font-mono text-xl font-bold text-[#090A0F] tabular-nums">{m.value}</p>
+              <p className="text-xs text-[#52525B] mt-1">{m.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
     </article>

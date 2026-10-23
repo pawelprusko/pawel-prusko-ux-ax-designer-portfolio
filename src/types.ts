@@ -6,10 +6,14 @@ export interface CaseStudy {
   impactMetric: string;
   impactDescription: string;
   overview: string;
-  problem: string;
-  solution: string;
-  keyInnovations: string[];
+  discoveryRisk: string;
+  interactionSpec: string;
+  validationPrototyping: string;
+  measurableImpact: string;
   metrics: { label: string; value: string }[];
+  problem?: string;
+  solution?: string;
+  keyInnovations?: string[];
 }
 
 export interface AgentTaskNode {
