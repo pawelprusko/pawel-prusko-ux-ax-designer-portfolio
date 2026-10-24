@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Play, 
   RotateCcw, 
@@ -15,35 +15,85 @@ export const Playground: React.FC = () => {
 
   // TAB 1: Latency & Thinking State
   const [latencyMode, setLatencyMode] = useState<'fast' | 'deep_reasoning'>('deep_reasoning');
-  const [streamSpeed] = useState<number>(25);
-  const [isStreaming, setIsStreaming] = useState<boolean>(false);
+  const [streamStatus, setStreamStatus] = useState<'idle' | 'reasoning' | 'synthesizing' | 'completed'>('idle');
+  const [visibleStepsCount, setVisibleStepsCount] = useState<number>(0);
+  const [activeStepThinking, setActiveStepThinking] = useState<number>(0);
   const [revealedChars, setRevealedChars] = useState<number>(0);
   const [isThoughtExpanded, setIsThoughtExpanded] = useState<boolean>(true);
 
-  const fullThoughtText = `1. Parsing directive constraint: "Verify GDPR compliance for EU customers in shard eu-west-03".
-2. Inspecting column definitions for unmasked email, phone, and IP addresses.
-3. Checking pseudonymization table mapping against cryptographic hash salts.
-4. Risk assessment: 0 exposed plaintext columns identified. Ready for output synthesis.`;
+  const timersRef = useRef<NodeJS.Timeout[]>([]);
+
+  const clearAllTimers = () => {
+    timersRef.current.forEach(t => clearTimeout(t));
+    timersRef.current = [];
+  };
+
+  useEffect(() => {
+    return () => clearAllTimers();
+  }, []);
+
+  const reasoningSteps = [
+    { step: 1, text: 'Parsing directive constraint: "Verify GDPR compliance for EU customers in shard eu-west-03".' },
+    { step: 2, text: 'Inspecting column definitions for unmasked email, phone, and IP addresses.' },
+    { step: 3, text: 'Checking pseudonymization table mapping against cryptographic hash salts.' },
+    { step: 4, text: 'Risk assessment: 0 exposed plaintext columns identified. Ready for output synthesis.' }
+  ];
 
   const fullOutputText = `Based on multi-layer static analysis across shard eu-west-03, all 42 user entities comply with GDPR Article 32 (Security of Processing). Pseudonymization hashes match SHA-256 invariants with zero unmasked PII leakage detected.`;
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isStreaming) {
-      if (revealedChars < fullOutputText.length) {
-        interval = setInterval(() => {
-          setRevealedChars(prev => prev + 2);
-        }, latencyMode === 'fast' ? 12 : streamSpeed);
-      } else {
-        setIsStreaming(false);
-      }
-    }
-    return () => clearInterval(interval);
-  }, [isStreaming, revealedChars, latencyMode, streamSpeed, fullOutputText.length]);
-
   const handleStartStream = () => {
+    clearAllTimers();
+    setStreamStatus('reasoning');
+    setVisibleStepsCount(0);
+    setActiveStepThinking(1);
     setRevealedChars(0);
-    setIsStreaming(true);
+    setIsThoughtExpanded(true);
+
+    const isFast = latencyMode === 'fast';
+    const stepDelay = isFast ? 40 : 500; // ~40ms for Instant (0.2s), ~500ms for Deep (2.5s)
+
+    // Sequential reveal of Steps 1 to 4
+    for (let i = 1; i <= 4; i++) {
+      const stepTimer = setTimeout(() => {
+        setVisibleStepsCount(i);
+        setActiveStepThinking(i < 4 ? i + 1 : 0);
+
+        // Once step 4 finishes, wait 200ms then smoothly stream synthesized response
+        if (i === 4) {
+          const pauseTimer = setTimeout(() => {
+            setStreamStatus('synthesizing');
+
+            const charIntervalMs = isFast ? 8 : 14;
+            const charsPerTick = isFast ? 12 : 5;
+            let currentChars = 0;
+
+            const charTimer = setInterval(() => {
+              currentChars = Math.min(currentChars + charsPerTick, fullOutputText.length);
+              setRevealedChars(currentChars);
+
+              if (currentChars >= fullOutputText.length) {
+                clearInterval(charTimer);
+                setStreamStatus('completed');
+              }
+            }, charIntervalMs);
+
+            timersRef.current.push(charTimer as unknown as NodeJS.Timeout);
+          }, 200);
+
+          timersRef.current.push(pauseTimer);
+        }
+      }, i * stepDelay);
+
+      timersRef.current.push(stepTimer);
+    }
+  };
+
+  const handleResetStream = () => {
+    clearAllTimers();
+    setStreamStatus('idle');
+    setVisibleStepsCount(0);
+    setActiveStepThinking(0);
+    setRevealedChars(0);
   };
 
   // TAB 2: HITL Gate State
@@ -132,17 +182,27 @@ export const Playground: React.FC = () => {
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1 bg-white p-1 rounded border border-[#E4E4E7] text-xs font-mono">
                   <button
-                    onClick={() => setLatencyMode('fast')}
+                    onClick={() => {
+                      if (streamStatus !== 'reasoning' && streamStatus !== 'synthesizing') {
+                        setLatencyMode('fast');
+                      }
+                    }}
+                    disabled={streamStatus === 'reasoning' || streamStatus === 'synthesizing'}
                     className={`px-2.5 py-1 rounded transition-colors ${
-                      latencyMode === 'fast' ? 'bg-[#090A0F] text-white' : 'text-[#52525B]'
+                      latencyMode === 'fast' ? 'bg-[#090A0F] text-white font-semibold' : 'text-[#52525B]'
                     }`}
                   >
                     Instant (0.2s)
                   </button>
                   <button
-                    onClick={() => setLatencyMode('deep_reasoning')}
+                    onClick={() => {
+                      if (streamStatus !== 'reasoning' && streamStatus !== 'synthesizing') {
+                        setLatencyMode('deep_reasoning');
+                      }
+                    }}
+                    disabled={streamStatus === 'reasoning' || streamStatus === 'synthesizing'}
                     className={`px-2.5 py-1 rounded transition-colors ${
-                      latencyMode === 'deep_reasoning' ? 'bg-[#090A0F] text-white' : 'text-[#52525B]'
+                      latencyMode === 'deep_reasoning' ? 'bg-[#090A0F] text-white font-semibold' : 'text-[#52525B]'
                     }`}
                   >
                     Deep (2.5s)
@@ -151,60 +211,129 @@ export const Playground: React.FC = () => {
 
                 <button
                   onClick={handleStartStream}
-                  disabled={isStreaming}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#090A0F] rounded hover:bg-[#27272A] disabled:opacity-40 transition-colors"
+                  disabled={streamStatus === 'reasoning' || streamStatus === 'synthesizing'}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#090A0F] rounded hover:bg-[#27272A] disabled:opacity-50 transition-colors shadow-xs cursor-pointer min-w-36 justify-center"
                 >
-                  <Play className="w-3 h-3 fill-white" />
-                  <span>Simulate Stream</span>
+                  {streamStatus === 'reasoning' || streamStatus === 'synthesizing' ? (
+                    <>
+                      <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                      <span>Streaming...</span>
+                    </>
+                  ) : (
+                    <span>► Simulate Stream</span>
+                  )}
                 </button>
+
+                {streamStatus !== 'idle' && (
+                  <button
+                    onClick={handleResetStream}
+                    disabled={streamStatus === 'reasoning' || streamStatus === 'synthesizing'}
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs text-[#52525B] bg-white hover:text-[#090A0F] border border-[#E4E4E7] rounded transition-colors disabled:opacity-40 cursor-pointer"
+                    title="Reset to initial state"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>Reset</span>
+                  </button>
+                )}
               </div>
             </div>
 
             {/* Container */}
             <div className="bg-white border border-[#E4E4E7] rounded p-5 space-y-4">
               
-              {/* Accordion */}
-              <div className="border border-[#E4E4E7] rounded bg-[#FAFAFA] overflow-hidden">
-                <button
-                  onClick={() => setIsThoughtExpanded(!isThoughtExpanded)}
-                  className="w-full px-4 py-2.5 flex items-center justify-between text-xs font-mono font-semibold text-[#090A0F] hover:bg-[#F4F4F5] transition-colors"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#090A0F]"></span>
-                    <span>Reasoning Process (4 cognitive hops)</span>
+              {/* 1. INITIAL STATE: Subtle placeholder prompt */}
+              {streamStatus === 'idle' && (
+                <div className="py-10 px-4 text-center space-y-3">
+                  <div className="w-9 h-9 mx-auto rounded-full border border-[#E4E4E7] bg-[#FAFAFA] flex items-center justify-center text-[#52525B]">
+                    <Play className="w-3.5 h-3.5 text-[#090A0F] ml-0.5" />
                   </div>
-                  {isThoughtExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                </button>
-
-                {isThoughtExpanded && (
-                  <div className="px-4 py-3 border-t border-[#E4E4E7] bg-white font-mono text-xs text-[#52525B] whitespace-pre-wrap leading-relaxed">
-                    {fullThoughtText}
+                  <p className="text-xs sm:text-sm text-[#52525B] font-mono max-w-lg mx-auto leading-relaxed">
+                    Click &apos;Simulate Stream&apos; to trigger the real-time Chain-of-Thought (CoT) reasoning pass.
+                  </p>
+                  <div className="flex items-center justify-center gap-3 text-[11px] font-mono text-[#71717A] pt-1">
+                    <span>Active Mode: <strong className="text-[#090A0F]">{latencyMode === 'fast' ? 'Instant (0.2s)' : 'Deep (2.5s)'}</strong></span>
+                    <span>•</span>
+                    <span>4 Progressive Cognitive Hops</span>
                   </div>
-                )}
-              </div>
-
-              {/* Streaming Output */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs text-[#52525B] font-mono">
-                  <span>Synthesized Response</span>
-                  <span>{revealedChars}/{fullOutputText.length} chars</span>
                 </div>
+              )}
 
-                <div className="min-h-20 p-4 rounded bg-[#FAFAFA] border border-[#E4E4E7] text-xs sm:text-sm text-[#090A0F] font-mono leading-relaxed">
-                  {revealedChars > 0 ? (
-                    <span>
-                      {fullOutputText.slice(0, revealedChars)}
-                      {isStreaming && (
-                        <span className="inline-block w-1.5 h-3.5 bg-[#090A0F] ml-1 translate-y-0.5 animate-pulse"></span>
-                      )}
-                    </span>
-                  ) : (
-                    <span className="text-[#52525B] italic font-sans">
-                      Click "Simulate Stream" above to observe the progressive token reveal.
-                    </span>
+              {/* 2. ACTIVE & COMPLETED STATES: Progressive Disclosure */}
+              {streamStatus !== 'idle' && (
+                <>
+                  {/* Reasoning Process Accordion */}
+                  <div className="border border-[#E4E4E7] rounded bg-[#FAFAFA] overflow-hidden transition-all">
+                    <button
+                      onClick={() => setIsThoughtExpanded(!isThoughtExpanded)}
+                      className="w-full px-4 py-2.5 flex items-center justify-between text-xs font-mono font-semibold text-[#090A0F] hover:bg-[#F4F4F5] transition-colors cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className={`w-1.5 h-1.5 rounded-full ${
+                          streamStatus === 'reasoning' ? 'bg-[#090A0F] animate-pulse' : 'bg-[#090A0F]'
+                        }`}></span>
+                        <span>
+                          Reasoning Process ({Math.min(visibleStepsCount, 4)} of 4 cognitive hops
+                          {streamStatus === 'reasoning' ? ' · Thinking...' : ' · Complete'})
+                        </span>
+                      </div>
+                      {isThoughtExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                    </button>
+
+                    {isThoughtExpanded && (
+                      <div className="px-4 py-3.5 border-t border-[#E4E4E7] bg-white font-mono text-xs text-[#090A0F] space-y-2.5">
+                        {visibleStepsCount === 0 && streamStatus === 'reasoning' && (
+                          <div className="flex items-center gap-2 text-xs text-[#52525B] italic font-sans py-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#090A0F] animate-ping"></span>
+                            <span>Initiating cognitive reasoning pass...</span>
+                          </div>
+                        )}
+
+                        {reasoningSteps.slice(0, visibleStepsCount).map((stepItem) => {
+                          const isCurrentActive = activeStepThinking === stepItem.step && streamStatus === 'reasoning';
+                          return (
+                            <div key={stepItem.step} className="flex items-start gap-2.5 leading-relaxed">
+                              <span className="text-[#52525B] select-none shrink-0 font-bold">
+                                {stepItem.step}.
+                              </span>
+                              <span className="text-[#090A0F] flex-1">
+                                {stepItem.text.replace(/^\d+\.\s*/, '')}
+                                {isCurrentActive && latencyMode === 'deep_reasoning' && (
+                                  <span className="inline-flex items-center gap-1.5 ml-2 text-[10px] font-bold text-[#090A0F] bg-[#FAFAFA] border border-[#090A0F] px-1.5 py-0.5 rounded">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#090A0F] animate-ping inline-block"></span>
+                                    Thinking...
+                                  </span>
+                                )}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Synthesized Response Card (Fades in / streams once Step 4 reveals) */}
+                  {(streamStatus === 'synthesizing' || streamStatus === 'completed') && (
+                    <div className="space-y-2 pt-1 transition-all duration-300">
+                      <div className="flex items-center justify-between text-xs text-[#52525B] font-mono">
+                        <span className="font-semibold text-[#090A0F]">Synthesized Response</span>
+                        <span>
+                          {streamStatus === 'synthesizing' ? 'Streaming tokens...' : '✓ Complete · Grounded'}
+                          {' '}({revealedChars}/{fullOutputText.length} chars)
+                        </span>
+                      </div>
+
+                      <div className="min-h-20 p-4 rounded bg-[#FAFAFA] border border-[#E4E4E7] text-xs sm:text-sm text-[#090A0F] font-mono leading-relaxed">
+                        <span>
+                          {fullOutputText.slice(0, revealedChars)}
+                          {streamStatus === 'synthesizing' && (
+                            <span className="inline-block w-1.5 h-3.5 bg-[#090A0F] ml-1 translate-y-0.5 animate-pulse"></span>
+                          )}
+                        </span>
+                      </div>
+                    </div>
                   )}
-                </div>
-              </div>
+                </>
+              )}
 
             </div>
 

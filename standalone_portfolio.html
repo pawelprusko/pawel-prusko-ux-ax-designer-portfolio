@@ -555,13 +555,77 @@
         <p class="text-sm text-[#52525B]">Test streaming progressive disclosure, Human-in-the-Loop (HITL) gates, and Retrieval-Augmented Generation (RAG) source grounding directly.</p>
       </div>
 
-      <div class="border border-[#E4E4E7] rounded-lg bg-[#FAFAFA] p-6 space-y-4">
-        <div class="flex items-center justify-between text-xs font-mono">
-          <span class="font-bold text-[#090A0F]">Pattern: Latency &amp; Progressive Disclosure</span>
-          <button onclick="runPlaygroundStream()" class="px-3 py-1.5 bg-[#090A0F] text-white rounded text-xs font-semibold hover:bg-[#27272A]">Simulate Stream</button>
+      <!-- Tab 01 Latency & Thinking UX -->
+      <div class="border border-[#E4E4E7] rounded-lg bg-[#FAFAFA] p-6 sm:p-8 space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h3 class="text-sm font-bold text-[#090A0F] font-mono uppercase">
+              Progressive Disclosure &amp; Chain-of-Thought (CoT) Streamer
+            </h3>
+            <p class="text-xs text-[#52525B] mt-0.5">
+              Demonstrates how intelligent interfaces maintain operator attention during high-latency reasoning passes.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1 bg-white p-1 rounded border border-[#E4E4E7] text-xs font-mono">
+              <button id="mode-fast-btn" onclick="setPlaygroundMode('fast')" class="px-2.5 py-1 rounded text-[#52525B] transition-colors cursor-pointer">
+                Instant (0.2s)
+              </button>
+              <button id="mode-deep-btn" onclick="setPlaygroundMode('deep')" class="px-2.5 py-1 rounded bg-[#090A0F] text-white font-semibold transition-colors cursor-pointer">
+                Deep (2.5s)
+              </button>
+            </div>
+
+            <button id="simulate-stream-btn" onclick="runPlaygroundStream()" class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#090A0F] rounded hover:bg-[#27272A] disabled:opacity-50 transition-colors shadow-xs cursor-pointer min-w-36">
+              ► Simulate Stream
+            </button>
+
+            <button id="reset-stream-btn" onclick="resetPlaygroundStream()" class="hidden inline-flex items-center gap-1 px-2.5 py-1.5 text-xs text-[#52525B] bg-white hover:text-[#090A0F] border border-[#E4E4E7] rounded transition-colors cursor-pointer">
+              <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+              <span>Reset</span>
+            </button>
+          </div>
         </div>
-        <div id="playground-stream-box" class="p-4 bg-white border border-[#E4E4E7] rounded min-h-16 text-xs text-[#090A0F] font-mono leading-relaxed">
-          Click "Simulate Stream" to see token-by-token progression and thinking reveal.
+
+        <!-- Container -->
+        <div class="bg-white border border-[#E4E4E7] rounded p-5 space-y-4">
+          <!-- 1. Initial State Placeholder -->
+          <div id="stream-placeholder" class="py-10 px-4 text-center space-y-3">
+            <div class="w-9 h-9 mx-auto rounded-full border border-[#E4E4E7] bg-[#FAFAFA] flex items-center justify-center text-[#52525B]">
+              <i data-lucide="play" class="w-3.5 h-3.5 text-[#090A0F] ml-0.5"></i>
+            </div>
+            <p class="text-xs sm:text-sm text-[#52525B] font-mono max-w-lg mx-auto leading-relaxed">
+              Click 'Simulate Stream' to trigger the real-time Chain-of-Thought (CoT) reasoning pass.
+            </p>
+            <div class="flex items-center justify-center gap-3 text-[11px] font-mono text-[#71717A] pt-1">
+              <span>Active Mode: <strong id="active-mode-label" class="text-[#090A0F]">Deep (2.5s)</strong></span>
+              <span>•</span>
+              <span>4 Progressive Cognitive Hops</span>
+            </div>
+          </div>
+
+          <!-- 2. Active Reasoning Box -->
+          <div id="stream-reasoning-box" class="hidden border border-[#E4E4E7] rounded bg-[#FAFAFA] overflow-hidden transition-all">
+            <div class="w-full px-4 py-2.5 flex items-center justify-between text-xs font-mono font-semibold text-[#090A0F]">
+              <div class="flex items-center gap-2">
+                <span id="reasoning-indicator-dot" class="w-1.5 h-1.5 rounded-full bg-[#090A0F] animate-pulse"></span>
+                <span id="reasoning-header-text">Reasoning Process (0 of 4 cognitive hops · Thinking...)</span>
+              </div>
+            </div>
+            <div id="reasoning-steps-list" class="px-4 py-3.5 border-t border-[#E4E4E7] bg-white font-mono text-xs text-[#090A0F] space-y-2.5">
+            </div>
+          </div>
+
+          <!-- 3. Synthesized Response Box -->
+          <div id="stream-response-box" class="hidden space-y-2 pt-1 transition-all duration-300">
+            <div class="flex items-center justify-between text-xs text-[#52525B] font-mono">
+              <span class="font-semibold text-[#090A0F]">Synthesized Response</span>
+              <span id="stream-chars-count">Streaming tokens...</span>
+            </div>
+            <div id="stream-response-text" class="min-h-20 p-4 rounded bg-[#FAFAFA] border border-[#E4E4E7] text-xs sm:text-sm text-[#090A0F] font-mono leading-relaxed">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -790,16 +854,146 @@
         p.innerHTML = '<strong class="text-[#090A0F] uppercase">Automation Bias Safeguard: High Variance (62.1%)</strong><p class="text-[#52525B]">Explainable AI feature weights: Cash-flow volatility (-42%). Mandatory justification required.</p><input type="text" placeholder="Type reason for override..." class="w-full p-2 border border-[#E4E4E7] rounded bg-white font-mono text-xs text-[#090A0F]"><button onclick="alert(\'Exception authorized and logged.\')" class="px-4 py-2 bg-[#090A0F] text-white rounded font-semibold text-xs hover:bg-[#27272A]">Sign Justification & Authorize</button>';
       }
     }
+    let playgroundMode = 'deep';
+    let playgroundTimers = [];
+
+    function setPlaygroundMode(mode) {
+      playgroundMode = mode;
+      const btnFast = document.getElementById('mode-fast-btn');
+      const btnDeep = document.getElementById('mode-deep-btn');
+      const label = document.getElementById('active-mode-label');
+      if (mode === 'fast') {
+        btnFast.className = 'px-2.5 py-1 rounded bg-[#090A0F] text-white font-semibold transition-colors cursor-pointer';
+        btnDeep.className = 'px-2.5 py-1 rounded text-[#52525B] transition-colors cursor-pointer';
+        if (label) label.innerText = 'Instant (0.2s)';
+      } else {
+        btnDeep.className = 'px-2.5 py-1 rounded bg-[#090A0F] text-white font-semibold transition-colors cursor-pointer';
+        btnFast.className = 'px-2.5 py-1 rounded text-[#52525B] transition-colors cursor-pointer';
+        if (label) label.innerText = 'Deep (2.5s)';
+      }
+    }
+
+    function clearPlaygroundTimers() {
+      playgroundTimers.forEach(t => clearTimeout(t));
+      playgroundTimers = [];
+    }
+
+    const reasoningHops = [
+      '1. Parsing directive constraint: "Verify GDPR compliance for EU customers in shard eu-west-03".',
+      '2. Inspecting column definitions for unmasked email, phone, and IP addresses.',
+      '3. Checking pseudonymization table mapping against cryptographic hash salts.',
+      '4. Risk assessment: 0 exposed plaintext columns identified. Ready for output synthesis.'
+    ];
+
+    const finalSynthesisText = 'Based on multi-layer static analysis across shard eu-west-03, all 42 user entities comply with GDPR Article 32 (Security of Processing). Pseudonymization hashes match SHA-256 invariants with zero unmasked PII leakage detected.';
+
     function runPlaygroundStream() {
-      const box = document.getElementById('playground-stream-box');
-      box.innerText = '';
-      const text = '> Initiating cognitive pass... Shard eu-west-03 scanned. 42 entities verified compliant with GDPR Article 32. Zero unmasked PII leakage detected.';
-      let i = 0;
-      const interval = setInterval(() => {
-        box.innerText += text[i];
-        i++;
-        if (i >= text.length) clearInterval(interval);
-      }, 15);
+      clearPlaygroundTimers();
+
+      const btn = document.getElementById('simulate-stream-btn');
+      const resetBtn = document.getElementById('reset-stream-btn');
+      const placeholder = document.getElementById('stream-placeholder');
+      const reasoningBox = document.getElementById('stream-reasoning-box');
+      const reasoningList = document.getElementById('reasoning-steps-list');
+      const reasoningHeader = document.getElementById('reasoning-header-text');
+      const responseBox = document.getElementById('stream-response-box');
+      const responseText = document.getElementById('stream-response-text');
+      const charsCount = document.getElementById('stream-chars-count');
+
+      // 1. Temporarily disable button and change text
+      btn.disabled = true;
+      btn.innerHTML = '<span class="w-2 h-2 rounded-full bg-white animate-pulse"></span><span>Streaming...</span>';
+      if (resetBtn) resetBtn.classList.remove('hidden');
+
+      // 2. Hide placeholder, reveal reasoning box, clear previous content
+      if (placeholder) placeholder.classList.add('hidden');
+      if (reasoningBox) reasoningBox.classList.remove('hidden');
+      if (reasoningList) reasoningList.innerHTML = '';
+      if (responseBox) responseBox.classList.add('hidden');
+      if (responseText) responseText.innerHTML = '';
+
+      const isFast = playgroundMode === 'fast';
+      const stepDelay = isFast ? 40 : 500;
+
+      // 3. Sequentially reveal Step 1 to Step 4
+      for (let i = 1; i <= 4; i++) {
+        const timer = setTimeout(() => {
+          if (reasoningHeader) {
+            reasoningHeader.innerText = `Reasoning Process (${i} of 4 cognitive hops · ${i < 4 ? 'Thinking...' : 'Complete'})`;
+          }
+
+          // Render step
+          const stepDiv = document.createElement('div');
+          stepDiv.className = 'flex items-start gap-2.5 leading-relaxed';
+          const hopText = reasoningHops[i - 1].replace(/^\\d+\\.\\s*/, '');
+          const isThinking = i < 4 && !isFast;
+          
+          stepDiv.innerHTML = `
+            <span class="text-[#52525B] select-none shrink-0 font-bold">${i}.</span>
+            <span class="text-[#090A0F] flex-1">
+              ${hopText}
+              ${isThinking ? '<span class="inline-flex items-center gap-1.5 ml-2 text-[10px] font-bold text-[#090A0F] bg-[#FAFAFA] border border-[#090A0F] px-1.5 py-0.5 rounded"><span class="w-1.5 h-1.5 rounded-full bg-[#090A0F] animate-ping inline-block"></span>Thinking...</span>' : ''}
+            </span>
+          `;
+          if (reasoningList) reasoningList.appendChild(stepDiv);
+
+          // Once Step 4 reveals, wait 200ms and stream synthesized response
+          if (i === 4) {
+            const synthTimer = setTimeout(() => {
+              if (responseBox) responseBox.classList.remove('hidden');
+              if (charsCount) charsCount.innerText = 'Streaming tokens...';
+
+              let charIndex = 0;
+              const charSpeed = isFast ? 8 : 14;
+              const charChunk = isFast ? 12 : 5;
+
+              const streamInterval = setInterval(() => {
+                charIndex = Math.min(charIndex + charChunk, finalSynthesisText.length);
+                if (responseText) {
+                  responseText.innerHTML = `<span>${finalSynthesisText.slice(0, charIndex)}<span class="inline-block w-1.5 h-3.5 bg-[#090A0F] ml-1 translate-y-0.5 animate-pulse"></span></span>`;
+                }
+                if (charsCount) {
+                  charsCount.innerText = `Streaming tokens... (${charIndex}/${finalSynthesisText.length} chars)`;
+                }
+
+                if (charIndex >= finalSynthesisText.length) {
+                  clearInterval(streamInterval);
+                  if (responseText) responseText.innerHTML = `<span>${finalSynthesisText}</span>`;
+                  if (charsCount) charsCount.innerText = `✓ Complete · Grounded (${finalSynthesisText.length}/${finalSynthesisText.length} chars)`;
+                  
+                  // Re-enable button back to "► Simulate Stream"
+                  btn.disabled = false;
+                  btn.innerHTML = '► Simulate Stream';
+                }
+              }, charSpeed);
+
+              playgroundTimers.push(streamInterval);
+            }, 200);
+
+            playgroundTimers.push(synthTimer);
+          }
+        }, i * stepDelay);
+
+        playgroundTimers.push(timer);
+      }
+    }
+
+    function resetPlaygroundStream() {
+      clearPlaygroundTimers();
+      const btn = document.getElementById('simulate-stream-btn');
+      const resetBtn = document.getElementById('reset-stream-btn');
+      const placeholder = document.getElementById('stream-placeholder');
+      const reasoningBox = document.getElementById('stream-reasoning-box');
+      const responseBox = document.getElementById('stream-response-box');
+
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '► Simulate Stream';
+      }
+      if (resetBtn) resetBtn.classList.add('hidden');
+      if (placeholder) placeholder.classList.remove('hidden');
+      if (reasoningBox) reasoningBox.classList.add('hidden');
+      if (responseBox) responseBox.classList.add('hidden');
     }
     function showSourceModal() {
       alert("Ground Truth Source: SELECT SUM(mrr_amount) FROM fact_subscription_lifecycle WHERE fiscal_quarter = '2026-Q3' (Similarity: 0.984)");
